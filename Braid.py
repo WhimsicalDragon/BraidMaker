@@ -15,9 +15,13 @@ for i in range(len(braid)):
     braid[i] = int(braid[i])
 
 print(braid)
-size = len(braid)
+size = 1
+for i in range(len(braid)):
+    if size < abs(braid[i] + 1):
+        size = abs(braid[i] + 1)
 
-visual = [['|',' ','|',' ','|']]
+
+#visual = [['|',' ','|',' ','|']]
 
 #Iniates the start of a braid
 def startBraid(size):
@@ -54,23 +58,21 @@ def leftOver(visual,overStrand,size):
     if overStrand == 0:
         raise Exception("There is an issue with the braid word given. Braid word asks to cross leftmost strand over another strand in the left direction. This cannot happen!")
     line = []
-
+    print("Left!")
     for i in range(size-1):
-        if i != overStrand:
+        print(i)
+        if i+1 != overStrand:
             line.append('|')
             line.append(' ')
         else:
-            del line[-1]
-            del line[-1]
             line.append('/')
             line.append('-')
             line.append('\\')
             line.append(' ')
 
     del line[-1]
+    print(line)
     visual.insert(0,line)
-
-    visual = noCross(visual)
     return visual
         
 #Creates a crossing that cause overstrand to move right and cross over the adjacent strand
@@ -86,12 +88,9 @@ def rightOver(visual,overStrand,size):
     line = []
 
     for i in range(size - 1):
-        if i != overStrand:
-            if i == overStrand -1:
-                continue
-            else:
-                line.append('|')
-                line.append(' ')
+        if i+1 != overStrand:
+            line.append('|')
+            line.append(' ')
         else:
             line.append('/')
             line.append('+')
@@ -101,7 +100,6 @@ def rightOver(visual,overStrand,size):
     del line[-1]
     visual.insert(0,line)
 
-    visual = noCross(visual)
     return visual
 
 #Generates the visual braid given the braid word
@@ -114,12 +112,6 @@ def genBraid(braid,visual,size):
             visual = rightOver(visual,abs(i),size)
     return visual
 
-#Gets the column of a 2d array
-def getCol(arr2d,colNum):
-    column = []
-    for i in arr2d:
-        column.append(i[colNum])
-    return column
 
 #Sets up the starting mouse position
 def mouseSetup():
@@ -197,10 +189,10 @@ printBraid(visual)
 
 print(braid)
 print("Your braid!")
-printBraid(genBraid(braid,visual,3))
+printBraid(genBraid(braid,visual,size))
 print(braid)
 
-print(getCol(visual,1))
+#print(getCol(visual,1))
 
 loc = mouseSetup()
 
