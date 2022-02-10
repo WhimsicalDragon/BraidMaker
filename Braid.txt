@@ -4,10 +4,7 @@
 import time
 import pyautogui as mouse
 
-#mouse.PAUSE = 1
-
-global drawSpeed #Change this to a 
-drawSpeed = 0.5 #0.5 is effective, but painfully slow to watch...
+mouse.PAUSE = 2.5
 
 braid = input("Enter a braid word:")
 
@@ -22,8 +19,8 @@ for i in range(len(braid)):
 print(braid)
 size = 1
 for i in range(len(braid)):
-    if size < (abs(braid[i]) + 1):
-        size = (abs(braid[i]) + 1)
+    if size < abs(braid[i] + 1):
+        size = abs(braid[i] + 1)
 
 
 #visual = [['|',' ','|',' ','|']]
@@ -104,6 +101,7 @@ def rightOver(visual,overStrand,size):
 
     del line[-1]
     visual.insert(0,line)
+
     return visual
 
 #Generates the visual braid given the braid word
@@ -132,44 +130,34 @@ def mouseSetup():
     loc = (x,y)
     return loc
 
-#Draws a left diagonal
 def drawLeftDiag(x,y,spacing,length,toggle):
-    global drawSpeed
 
     if toggle == True:
         mouse.keyDown('shift')
 
     mouse.moveTo(x,y)
-    mouse.dragTo(x + spacing,y - length,button='left',duration=drawSpeed)
+    mouse.dragTo(x + spacing,y - length,button='left')
     mouse.keyUp('shift')
     return
 
-#Draws a right diagonal
 def drawRightDiag(x,y,spacing,length,toggle):
 
     if toggle == True:
         mouse.keyDown('shift')
 
     mouse.moveTo(x,y)
-    mouse.dragTo(x - spacing,y - length,button='left',duration=drawSpeed)
+    mouse.dragTo(x - spacing,y - length,button='left')
     mouse.keyUp('shift')
     return
 
-#Draws a vertical line
 def drawNoCross(x,y,length):
-    global drawSpeed
-
     mouse.moveTo(x,y)
-    mouse.dragTo(x,y - length,button='left',duration=drawSpeed)
+    mouse.dragTo(x,y - length,button='left')
     return
 
-#Leverages the other draw functions to draw a braid using the visual array as instructions
 def drawBraid(loc,visual,spacing,length):
     x = loc[0]
     y = loc [1]
-
-    visual.reverse()
-
     for i in range(len(visual)):
         for j in range(len(visual[i])):
             toggle = False
@@ -189,7 +177,7 @@ def drawBraid(loc,visual,spacing,length):
             elif visual[i][j] == '\\':
                 if visual[i][j-1] == '+':
                     toggle = True
-                drawRightDiag(x,y,spacing,length,toggle)
+                drawRightDiag(x,y,spacing,length,False)
                 x = x + spacing
             else:
                 pass
@@ -206,11 +194,9 @@ print("Your braid!")
 printBraid(genBraid(braid,visual,size))
 print(braid)
 
+#print(getCol(visual,1))
+
 loc = mouseSetup()
-print("It will take approximately " + str(len(visual)*size*0.5) + " seconds to draw this braid.")
+
 time.sleep(5)
-drawBraid(loc,visual,50,25)
-
-
-
-#KLO Tends to lose crossing information if you go too fast, so we have to be slow with our drawing
+drawBraid(loc,visual,30,50)
