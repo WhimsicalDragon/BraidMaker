@@ -4,9 +4,9 @@
 import time
 import pyautogui as mouse
 
-#mouse.PAUSE = 1
+#mouse.PAUSE = 1 #This is to slow down movement between steps if needed
 
-global drawSpeed #Change this to a 
+global drawSpeed
 drawSpeed = 0.5 #0.5 is effective, but painfully slow to watch...
 
 braid = input("Enter a braid word:")
@@ -24,9 +24,6 @@ size = 1
 for i in range(len(braid)):
     if size < (abs(braid[i]) + 1):
         size = (abs(braid[i]) + 1)
-
-
-#visual = [['|',' ','|',' ','|']]
 
 #Iniates the start of a braid
 def startBraid(size):
@@ -63,9 +60,7 @@ def leftOver(visual,overStrand,size):
     if overStrand == 0:
         raise Exception("There is an issue with the braid word given. Braid word asks to cross leftmost strand over another strand in the left direction. This cannot happen!")
     line = []
-    print("Left!")
     for i in range(size-1):
-        print(i)
         if i+1 != overStrand:
             line.append('|')
             line.append(' ')
@@ -109,7 +104,6 @@ def rightOver(visual,overStrand,size):
 #Generates the visual braid given the braid word
 def genBraid(braid,visual,size):
     for i in braid:
-        print(i)
         if i < 0:
             visual = leftOver(visual,abs(i),size)
         else:
@@ -196,21 +190,32 @@ def drawBraid(loc,visual,spacing,length):
         y = y - length
         x = loc[0]
 
+"""
+def connectStrands(loc,visual,spacing,length):
+    x = loc[0]
+    y = loc [1]
+
+    for i in range(len(visual)):
+        for j in range(len(visual[i])):
+            if i == 0 and j==0:
+
+            if visual[i][j] != ' ' and visual[i][j] != '+' and visual[i][j] != '-':
+                drawNoCross(x,y,length)
+                x = x + spacing
+        y = y - length
+        x = loc[0]
+"""
+
 visual = startBraid(size)
 
-printBraid(visual)
 
-
-print(braid)
 print("Your braid!")
 printBraid(genBraid(braid,visual,size))
 print(braid)
 
 loc = mouseSetup()
-print("It will take approximately " + str(len(visual)*size*0.5) + " seconds to draw this braid.")
-time.sleep(5)
+print("It will take approximately " + str(len(visual)*size*0.5) + " seconds to draw this braid.") #KLO Tends to lose crossing information if you go too fast, so we have to be slow with our drawing
+time.sleep(5) #Short timeout to switch to KLO
 drawBraid(loc,visual,50,25)
+#connectStrands(loc,visual,50,25)
 
-
-
-#KLO Tends to lose crossing information if you go too fast, so we have to be slow with our drawing
