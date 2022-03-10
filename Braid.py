@@ -190,21 +190,18 @@ def drawBraid(loc,visual,spacing,length):
         y = y - length
         x = loc[0]
 
-"""
 def connectStrands(loc,visual,spacing,length):
     x = loc[0]
     y = loc [1]
 
     for i in range(len(visual)):
         for j in range(len(visual[i])):
-            if i == 0 and j==0:
 
             if visual[i][j] != ' ' and visual[i][j] != '+' and visual[i][j] != '-':
                 drawNoCross(x,y,length)
                 x = x + spacing
         y = y - length
         x = loc[0]
-"""
 
 visual = startBraid(size)
 
@@ -217,5 +214,5 @@ loc = mouseSetup()
 print("It will take approximately " + str(len(visual)*size*0.5) + " seconds to draw this braid.") #KLO Tends to lose crossing information if you go too fast, so we have to be slow with our drawing
 time.sleep(5) #Short timeout to switch to KLO
 drawBraid(loc,visual,50,25)
-#connectStrands(loc,visual,50,25)
+connectStrands(loc,visual,50,25)
 
